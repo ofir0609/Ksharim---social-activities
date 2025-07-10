@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <title>My Activities</title>
+    <style>
+        .activities-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .activity-card {
+            background: #fff;
+            padding: 20px;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .activity-card h2 {
+            font-family: "Poetsen One", sans-serif;
+            color: dodgerblue;
+            margin-bottom: 10px;
+        }
+        .activity-card p {
+            margin: 5px 0;
+        }
+        .activity-card a {
+            color: dodgerblue;
+            text-decoration: none;
+        }
+        .activity-card a:hover {
+            text-decoration: underline;
+        }
+        .activity-card .activity-meta {
+            color: #666;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+<div class="content">
+    <h1 style="text-align: center;">My Activities</h1>
+    <div class="activities-container">
+        {% for complete_activity in complete_activities %}
+            {% set activity = complete_activity["activity"] %}
+            {% set creator_name = complete_activity["creator_name"] %}
+            {% set city_name = complete_activity["city_name"] %}
+
+            <div class="activity-card">
+                <h2><a href="{{ url_for('activity', activity_id=complete_activity['activity'].ActivityID) }}">{{ activity.ActivityName }}</a></h2>
+                <p>{{ activity.Description }}</p>
+                <p class="activity-meta">Creator: <a href="/profile/{{ activity.CreatorID }}">{{ creator_name }}</a></p>
+                {% if city_name %}
+                    <p class="activity-meta">Activity City: {{ city_name }}</p>
+                {% endif %}
+                {% if activity.ActivityDate %}
+                    <p class="activity-meta">Activity Date: {{ activity.ActivityDate }}</p>
+                {% endif %}
+                {% if activity.AgeRangeMin %}
+                    <p class="activity-meta">Minimum Age: {{ activity.AgeRangeMin }}</p>
+                {% endif %}
+                {% if activity.AgeRangeMax %}
+                    <p class="activity-meta">Maximum Age: {{ activity.AgeRangeMax }}</p>
+                {% endif %}
+            </div>
+         {% endfor %}
+    </div>
+</div>
+{% endblock %}

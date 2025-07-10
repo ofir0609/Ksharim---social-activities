@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <style>
+        .content {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .content h1 {
+            font-family: 'Poetsen One', sans-serif;
+            font-weight: lighter;
+            color: dodgerblue;
+        }
+        .content p {
+            font-size: 18px;
+            color: #333;
+        }
+        .content a {
+            color: dodgerblue;
+            font-weight: bold;
+            text-decoration: none;
+            margin: 0 5px;
+        }
+        .content a:hover {
+            text-decoration: underline;
+        }
+        .activity-images {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 20px;
+        }
+        .activity-images img {
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+<div class="content">
+    <h1>Ksharim Project</h1>
+    <p>Connect to new people through fun activities!</p>
+
+    {% if not current_user.UserID %}
+        <a href="/sign_in">Sign In</a> or <a href="/sign_up">Sign Up</a>
+    {% else %}
+        <a href="/find_activities">Search for Activities Here</a>
+    {% endif %}
+
+    <div class="activity-images">
+        <img src="{{ url_for('static', filename='images/picnic.jpg') }}" alt="Picnic">
+        <img src="{{ url_for('static', filename='images/dance.jpg') }}" alt="Group Dance">
+        <img src="{{ url_for('static', filename='images/bbq.jpg') }}" alt="Social BBQ">
+        <img src="{{ url_for('static', filename='images/running.jpg') }}" alt="Running Group">
+    </div>
+</div>
+{% endblock %}

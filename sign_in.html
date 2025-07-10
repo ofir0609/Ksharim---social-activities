@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <title>Sign in - Ksharim</title>
+    <style>
+        .sign-in-container {
+            max-width: 400px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .sign-in-container h1 {
+            text-align: center;
+            color: dodgerblue;
+        }
+        .sign-in-container form {
+            display: grid;
+            gap: 10px;
+        }
+        .sign-in-container input[type="text"],
+        .sign-in-container input[type="password"],
+        .sign-in-container input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .sign-in-container input[type="submit"] {
+            background: dodgerblue;
+            color: white;
+            cursor: pointer;
+            border: none;
+        }
+        .sign-in-container input[type="submit"]:hover {
+            background: #0056b3;
+        }
+        .sign-in-container .error {
+            color: red;
+            font-size: 14px;
+            text-align: center;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+<div class="content">
+    <div class="sign-in-container">
+        <h1>Sign In</h1>
+
+        <form action="/sign_in" method="POST">
+            <label for="Username">Username:</label>
+            <input type="text" name="Username" id="Username" value="{{ Username }}">
+
+            <label for="Password">Password:</label>
+            <input type="text" name="Password" id="Password" value="{{ Password }}">
+
+            {% if error %}
+                <div class="error">{{ error }}</div>
+            {% endif %}
+
+            <input type="submit" value="Sign In">
+        </form>
+    </div>
+</div>
+{% endblock %}

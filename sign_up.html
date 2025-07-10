@@ -1,0 +1,84 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Sign Up - Ksharim</title>
+<style>
+    .form-container {
+        max-width: 600px;
+        margin: 0 auto;
+        background: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .form-container h1 {
+        text-align: center;
+        margin-bottom: 20px;
+        font-family: "Poetsen One", sans-serif;
+        color: dodgerblue;
+    }
+    .form-container label {
+        display: block;
+        margin-bottom: 10px;
+        font-weight: bold;
+    }
+    .form-container input[type="text"],
+    .form-container input[type="number"],
+    .form-container input[type="password"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-sizing: border-box;
+    }
+    .form-container input[type="submit"] {
+        background-color: dodgerblue;
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        cursor: pointer;
+        border-radius: 5px;
+        width: 100%;
+    }
+    .form-container input[type="submit"]:hover {
+        background-color: darkblue;
+    }
+    .form-container .error-message {
+        color: red;
+        text-align: center;
+    }
+</style>
+{% endblock %}
+
+{% block body %}
+<div class="content">
+    <div class="form-container">
+        <h1>Sign Up</h1>
+        <form action="/sign_up" method="POST">
+            <label for="Username">Username:</label>
+            <input type="text" name="Username" id="Username" value="{{ Username }}">
+
+            <label for="Password">Password:</label>
+            <input type="password" name="Password" id="Password" value="{{ Password }}">
+
+            <label for="Email">Email:</label>
+            <input type="text" name="Email" id="Email" value="{{ Email }}">
+
+            <label for="UserCity">User City:</label>
+            <input type="text" name="UserCity" id="UserCity" value="{{ UserCity }}">
+
+            <label for="Age">Age:</label>
+            <input type="number" name="Age" id="Age" value="{{ Age }}">
+
+            <label for="Bio">You can tell about yourself:</label>
+            <input type="text" name="Bio" id="Bio" value="{{ Bio }}">
+
+            {% if error %}
+                <p class="error-message">{{ error }}</p>
+            {% endif %}
+            <input type="submit" value="Sign Up">
+        </form>
+    </div>
+</div>
+{% endblock %}

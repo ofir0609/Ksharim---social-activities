@@ -1,0 +1,146 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <title>Ksharim - Find Activities</title>
+    <style>
+        .search-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .search-container h1 {
+            text-align: center;
+            color: dodgerblue;
+        }
+        .search-container form {
+            display: grid;
+            gap: 10px;
+        }
+        .search-container input[type="text"],
+        .search-container input[type="date"],
+        .search-container input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .search-container input[type="submit"] {
+            background: dodgerblue;
+            color: white;
+            cursor: pointer;
+            border: none;
+        }
+        .search-container input[type="submit"]:hover {
+            background: #0056b3;
+        }
+        .search-container .hint {
+            font-size: 14px;
+            color: #666;
+        }
+        .search-container .error {
+            color: red;
+            font-size: 14px;
+        }
+        .search-container .info {
+            color: gray;
+            font-size: 14px;
+        }
+        .activity-list {
+            list-style-type: none;
+            padding: 0;
+        }
+        .activity-list li {
+            background: #f9f9f9;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .activity-list li a {
+            color: dodgerblue;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .activity-list li a:hover {
+            text-decoration: underline;
+        }
+        .date-container {
+            display: flex;
+            gap: 10px;
+        }
+        .date-container input {
+            flex: 1;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+<div class="content">
+    <div class="search-container">
+        <h1>Find the right activities for you
+            {% if current_user.UserID %}
+                <a href="/for_you">For You</a>
+            {% endif %}
+        </h1>
+
+        <form action="/find_activities" method="POST">
+            <div class="date-container">
+                <div>
+                    <label for="First Date">Earliest Date:</label>
+                    <input type="date" name="First Date" id="First Date" value="{{ first_date }}" placeholder="YYYY-MM-DD">
+                </div>
+                <div>
+                    <label for="Last Date">Latest Date:</label>
+                    <input type="date" name="Last Date" id="Last Date" value="{{ last_date }}" placeholder="YYYY-MM-DD">
+                </div>
+            </div>
+            <div class="hint">You can add a date filter for the activities</div>
+            {% if date_error %}
+                <div class="error">The date is not valid, follow the instructions</div>
+            {% endif %}
+            <br>
+
+            <label for="Categories">Categories:</label>
+            <input type="text" name="Categories" id="Categories" value="{{ categories }}">
+            <div class="hint">Write the categories you are interested in, separated with ','</div>
+            {% if no_such_categories %}
+                <div class="info">Sorry, we are not familiar with: {{ no_such_categories }}<br>Perhaps there was a typo?</div>
+            {% endif %}
+            <br>
+
+            <label for="Cities">Cities:</label>
+            <input type="text" name="Cities" id="Cities" value="{{ cities }}">
+            <div class="hint">Write the cities you are willing to go to, separated with ','</div>
+            {% if no_such_cities %}
+                <div class="info">Sorry, we are not familiar with: {{ no_such_cities }}<br>Perhaps there was a typo?</div>
+            {% endif %}
+
+            <input type="submit" value="Search">
+        </form>
+
+        <ul class="activity-list">
+            {% if searched %}
+                <hr>
+                {% if not activities %}
+                    <div class="info">Sorry, no activities like that were found. Change the filters a bit and try again.</div>
+                {% else %}
+                    {% for activity in activities %}
+                        <li>
+                            <a href="{{ url_for('activity', activity_id=activity.ActivityID) }}">{{ activity.ActivityName }}</a>
+                            {% if current_user.is_authenticated %}
+                                <br>
+                                <a href="{{ url_for('join_activity', activity_id=activity.ActivityID) }}">Join</a>
+                            {% endif %}
+                            <br>
+                        </li>
+                    {% endfor %}
+                {% endif %}
+            {% endif %}
+        </ul>
+    </div>
+</div>
+{% endblock %}

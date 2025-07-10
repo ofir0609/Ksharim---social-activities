@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <title>Ksharim Activities</title>
+    <style>
+        .activity-list-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .activity-list-container h1 {
+            text-align: center;
+            color: dodgerblue;
+        }
+        .activity-list ul {
+            list-style: none;
+            padding: 0;
+        }
+        .activity-list li {
+            background: #f9f9f9;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .activity-list li a {
+            color: dodgerblue;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .activity-list li a:hover {
+            text-decoration: underline;
+        }
+        .activity-list li .join-link {
+            display: block;
+            margin-top: 5px;
+            font-size: 14px;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+<div class="content">
+    <div class="activity-list-container">
+        <h1>Search for Activities</h1>
+        <ul class="activity-list">
+            {% for activity in activities %}
+                <li>
+                    <a href="{{ url_for('activity', activity_id=activity.ActivityID) }}">{{ activity.ActivityName }}</a>
+                    {% if current_user.is_authenticated %}
+                        <a class="join-link" href="{{ url_for('join_activity', activity_id=activity.ActivityID) }}">Join</a>
+                    {% else %}
+                        <a class="join-link" href="/sign_in">Join</a>
+                    {% endif %}
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endblock %}

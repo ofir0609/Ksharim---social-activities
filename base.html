@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name='viewport' content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie-edge">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/main.css') }}">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poetsen+One&display=swap" rel="stylesheet">
+
+    <title>Ksharim</title>
+    <style>
+* {box-sizing: border-box;}
+
+body {
+  margin: 0;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.header {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  overflow: hidden;
+  background-color: #f1f1f1;
+  padding: 20px 10px;
+}
+
+.header a {
+  float: left;
+  color: black;
+  text-align: center;
+  padding: 12px;
+  text-decoration: none;
+  font-size: 18px;
+  line-height: 25px;
+  border-radius: 4px;
+}
+
+.header a.logo {
+  font-family: "Poetsen One", sans-serif;
+  font-size: 35px;
+  color: orange;
+  font-weight: lighter;
+}
+
+.header a.logo:hover {
+    background-color: transparent;
+    color: orange;
+}
+
+.header a:hover {
+    background-color: #ddd;
+}
+
+.header a.active {
+  background-color: dodgerblue;
+  color: white;
+}
+
+.header a.signup-button:hover {
+    background-color: dodgerblue; /* Keep the dodgerblue background on hover */
+    color: black; /* Keep the white text color on hover */
+}
+
+.header-right {
+  float: right;
+}
+
+.content {
+  padding-top: 80px;
+  padding-left:20px;
+  padding-right:20px;
+}
+
+.signup-button {
+    background-color: dodgerblue;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.activity-images {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.activity-images img {
+  width: 100%;
+  height: 300px; /* Set a fixed height */
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+
+    </style>
+    {% block head %}
+        <!-- For each page, content of the head can be added here -->
+    {% endblock %}
+</head>
+
+<body>
+{% if not remove_header %}
+<div class="header">
+    <a href="/" class="logo">Ksharim</a>
+    <div class="header-right">
+    {% if not current_user.is_authenticated %}
+        <a href="/sign_up" class="signup-button">Sign Up</a>
+        <a href="/sign_in" class="no-hover">Sign In</a>
+    {% else %}
+        <a href="/find_activities">Find Activities</a>
+        <a href="/my_activities">My Activities</a>
+        <a href="/create_activity">Create Activity</a>
+        <a href="/chat_list">Chats</a>
+        <a href="/profile/{{current_user.UserID}}">Profile</a>
+        <a href="{{ url_for('sign_out') }}">Logout</a>
+
+    {% endif %}
+    </div>
+</div>
+{% endif %}
+
+{% block body %}
+    <!-- For each page, content of the body can be added here -->
+{% endblock %}
+
+{% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <ul class="flashes">
+            {% for message in messages %}
+                <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endwith %}
+
+</body>
+</html>

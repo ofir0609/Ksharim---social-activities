@@ -1,0 +1,164 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <title>{{ activity.ActivityName }}</title>
+    <style>
+        .activity-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .activity-card {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-top: 20px;
+            text-align: center;
+        }
+        .activity-card h1, .activity-card h2 {
+            margin: 10px 0;
+        }
+        .activity-card p {
+            font-size: 16px;
+            color: #666;
+            margin: 5px 0;
+        }
+        .activity-card a {
+            color: dodgerblue;
+            text-decoration: none;
+        }
+        .activity-card a:hover {
+            text-decoration: underline;
+        }
+        .activity-card ul {
+            list-style: none;
+            padding: 0;
+        }
+        .activity-card ul li {
+            background: #f1f1f1;
+            margin: 5px 0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .activity-card button {
+            background-color: dodgerblue;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            margin: 5px;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .activity-card button:hover {
+            background-color: darkblue;
+        }
+        .button-group {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .button-group a {
+            margin: 0 10px;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+<div class="content">
+    <div class="activity-container">
+        {% if not activity %}
+            <div class="activity-card">
+                <h1>Activity Overview</h1>
+                <p>You need to choose an activity you want to see.</p>
+                <p>Here are activities to look over: <a href="/activities_list">Activity List</a></p>
+            </div>
+        {% else %}
+            <div class="activity-card">
+                <h1>{{ activity.ActivityName }}</h1>
+                <div class="button-group">
+                    {% if current_user.is_authenticated %}
+                        <a href="{{ url_for('join_activity', activity_id=activity.ActivityID) }}" class="button">Join</a>
+                        <a href="/activity_chat/{{ activity.ActivityID }}" class="button">Chat</a>
+                        {% if current_user.UserID == activity.CreatorID %}
+                            <a href="/activity_categories/{{ activity.ActivityID }}" class="button">Categories</a>
+                        {% endif %}
+                    {% endif %}
+                </div>
+                <div>
+                    <h2>Description:</h2>
+                    <p>{{ activity.Description }}</p>
+                </div>
+                <div>
+                    <h2>Date:</h2>
+                    <p>{{ date }}</p>
+                </div>
+                <div>
+                    <h2>City:</h2>
+                    <p>{{ city }}</p>
+                </div>
+                <div>
+                    <h2>Creator:</h2>
+                    <p><a href="/profile/{{ creator_id }}">{{ creator_name }}</a></p>
+                </div>
+                <div>
+                    <h2>Maximum Age:</h2>
+                    <p>{{ activity.AgeRangeMax }}</p>
+                </div>
+                <div>
+                    <h2>Minimum Age:</h2>
+                    <p>{{ activity.AgeRangeMin }}</p>
+                </div>
+                {% if city_name %}
+                <div>
+                    <h2>Activity City:</h2>
+                    <p>{{ city_name }}</p>
+                </div>
+                {% endif %}
+                {% if activity.ActivityDate %}
+                <div>
+                    <h2>Activity Date:</h2>
+                    <p>{{ activity.ActivityDate }}</p>
+                </div>
+                {% endif %}
+                <div>
+                    <h2>Categories:</h2>
+                    <ul>
+                        {% for category in category_names %}
+                            <li>{{ category }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                <div>
+                    <h2>Participants:</h2>
+                    <ul>
+                        {% for participant in participants %}
+                            <li><a href="/profile/{{ participant.UserID }}">{{ participant.Username }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% if current_user.UserID == activity.creator.UserID %}
+                <div>
+                    <h2>Join Requests:</h2>
+                    <ul>
+                        {% for complete_request in complete_join_requests %}
+                            {% set join_request = complete_request["join_request"] %}
+                            {% set username = complete_request["username"] %}
+                            <li>
+                                <a href="/profile/{{ join_request.UserID }}">{{ username }}</a> wants to join
+                                <form method="POST" action="{{ url_for('accept_request', request_id=join_request.JoinRequestID) }}" style="display:inline;">
+                                    <button type="submit" name="accept">Accept</button>
+                                </form>
+                                <form method="POST" action="{{ url_for('deny_request', request_id=join_request.JoinRequestID) }}" style="display:inline;">
+                                    <button type="submit" name="deny">Deny</button>
+                                </form>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endif %}
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

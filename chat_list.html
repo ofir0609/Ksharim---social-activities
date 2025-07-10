@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <title>Ksharim Chats</title>
+    <style>
+        .chat-list-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        .chat-list-container h1 {
+            text-align: center;
+            color: dodgerblue;
+        }
+        .chat-list ul {
+            list-style: none;
+            padding: 0;
+        }
+        .chat-list li {
+            background: #f9f9f9;
+            padding: 15px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .chat-list li a {
+            color: dodgerblue;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .chat-list li a:hover {
+            text-decoration: underline;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+<div class="content">
+    <div class="chat-list-container">
+        <h1>Chats</h1>
+        <ul class="chat-list">
+            {% for private_chat in private_chats %}
+                <li>
+                    <a href="{{ url_for('private_chat', other_user_id=private_chat[0]) }}">User - {{ private_chat[1] }}</a>
+                </li>
+            {% endfor %}
+            {% for activity_chat in activity_chats %}
+                <li>
+                    <a href="{{ url_for('activity_chat', activity_id=activity_chat[0]) }}">Activity - {{ activity_chat[1] }}</a>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+{% endblock %}

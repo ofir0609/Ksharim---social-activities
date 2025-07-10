@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block head %}
+    <title>{{ user_data.Username }} - Profile</title>
+    <style>
+        .profile-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .profile-card {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            text-align: center;
+        }
+        .profile-card img {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin-bottom: 20px;
+        }
+        .profile-card h1 {
+            margin: 10px 0;
+            font-size: 24px;
+        }
+        .profile-card h2 {
+            font-size: 18px;
+            color: #333;
+            margin: 10px 0;
+        }
+        .profile-card p {
+            font-size: 16px;
+            color: #666;
+            margin: 5px 0;
+        }
+        .profile-card ul {
+            list-style: none;
+            padding: 0;
+        }
+        .profile-card ul li {
+            background: #f1f1f1;
+            margin: 5px 0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+<div class="content">
+    <div class="profile-container">
+        <div class="profile-card">
+            <img src="{{ url_for('static', filename='images/default_profile.png') }}" alt="{{ user_data.Username }}'s profile picture">
+            <h1>{{ user_data.Username }}</h1>
+
+            <div class="button-group">
+                {% if current_user.is_authenticated %}
+                    <a href="/private_chat/{{ user_data.UserID }}" class="button">Chat</a>
+                    {% if current_user.UserID == user_data.UserID %}
+                    <a href="/user_categories" class="button">Categories</a>
+                    {% endif %}
+                {% endif %}
+            </div>
+
+            <h2>Age: <span>{{ user_data.Age }}</span></h2>
+            <h2>City: <span>{{ city_name }}</span></h2>
+            <h2>Bio:</h2>
+            <p>{{ user_data.Bio }}</p>
+            <h2>Categories:</h2>
+            <ul>
+                {% for category in category_names %}
+                    <li>{{ category }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}
