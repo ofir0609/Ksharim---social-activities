@@ -2,7 +2,7 @@
 Ksharim project was my final project in Software Engineering in highschool.
 The project is a platform for initiating and joining social activities.
 
-The project insists of the following:
+The project consists of the following:
  - html website for initiating and joining social activities (both FrontEnd, and BackEnd)
  - Tkinter management system to manage the data of the activities and the users 
 
